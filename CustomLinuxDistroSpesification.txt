@@ -1,0 +1,77 @@
+Linux Distro LegoxOS Untuk Para Developer Web
+
+- Pakai Base Debian 13 
+- Pakai Cinnamon X11 Desktop Enironment
+
+
+Coding Language, Tool & SDK Bawaan:
+- Ada Docker Bawaan
+- Ada Multi PHP (PHP Enviroment) Bawaan
+- Ada Multi Node JS (NVM) Bawaan
+- Ada Multi Python (PyEnv) Bawaan
+- Ada Multi Go (GVM) Bawaan
+- Ada SDK Android Bawaan
+- Ada Platform Tools Android Bawaan 
+- Ada Git Cli
+- Ada PostgreSQL Server Bawaan
+- Ada Redis Bawaan
+- Ada MariaDB Server Bawaan
+- Ada Hermes Agent CLI
+
+
+Apps Bawaan:
+Note: Semua Apps Bawaan Di Install Pakai Script Post Install Menggunakan Snapd
+- Ada Dbeaver 
+- Ada Postman 
+- Ada VSCode 
+- Ada Android Studio  
+- Ada Rustdesk
+- Ada Ungoogled Chromium Browser
+- Ada Firefox Browser 
+- Ada Telegram Desktop
+- Ada Discord 
+- Ada TailScale Desktop 
+- Ada BitWarden
+- Ada Telegram Desktop
+- Ada WPS Office
+
+
+Desktop Environment Utillites
+- Screenshot Tool
+- Clipboard History Tool
+
+
+Optimasi System:
+- Optimasi Service Database (Penting)
+Karena OS ini membawa PostgreSQL, MariaDB, dan Redis bawaan, pastikan kamu menonaktifkan auto-start ketiganya setelah instalasi. Jika ketiga database engine ini running bersamaan saat booting, konsumsi RAM akan langsung membengkak.
+Setel agar sistem disable service tersebut di awal, biarkan developer yang menyalakannya secara manual (contoh: sudo systemctl start postgresql) hanya saat mereka sedang mengerjakan proyek yang membutuhkannya.
+
+
+Style UI:
+- Default Dark Mode Cinnamon DE Theme 
+- Icon Using Xiaomi Icon Theme
+
+
+Development:
+Alur Kerja: Packer ➡️ RootFS ➡️ Bootable ISO
+Proses ini biasanya dibagi menjadi dua tahap utama. Packer akan bekerja sebagai "tukang masak", lalu script wrapper akan bertugas sebagai "tukang bungkus" ISO.
+
+Tahap 1: Packer Membangun "Isi" (Root Filesystem)
+- Di sini, Packer tidak di-set untuk menghasilkan .ova atau VM Image, melainkan dipaksa untuk membangun sistem di dalam direktori chroot (menggunakan plugin packer-builder-chroot atau dengan membuat disk raw img yang nantinya di-mount).
+- Base System: Packer menarik bootstrap Debian 13 (menggunakan debootstrap).
+- Provisioning (Skrip Bash): Packer mengeksekusi skrip instalasi ke dalam sistem yang baru di-bootstrap tersebut via chroot:
+- Menginstal Cinnamon DE, X11, Git, Docker.
+- Menyiapkan Environment (NVM, PyEnv, GVM).
+- Menyiapkan skrip Multi PHP. Ini akan sangat memanjakan alur kerja pengembangan web, terutama untuk testing berbagai package Composer lintas versi PHP dengan mulus.
+- Memasukkan skrip Post-Install snapd ke /etc/skel agar jalan saat booting pertama.
+- Injeksi Estetika: Packer meng-copy file wallpaper, lockscreen, dan konfigurasi tema Industrial & Lokal Tangerang Selatan yang gelap dan raw (dengan icon pack Xiaomi) ke dalam root direktori /usr/share/.
+
+Tahap 2: Mengubah RootFS Menjadi Live ISO
+- Setelah Packer selesai melakukan tugasnya, kita punya direktori (RootFS) yang berisi OS lengkap. Sekarang tugas script tambahan (biasanya berbasis mksquashfs dan xorriso) untuk membungkusnya:
+- Membungkus File System: RootFS yang sudah matang tadi dikompres menjadi file filesystem.squashfs. Ini adalah format standar untuk semua Live CD Linux.
+- Membuat Struktur Boot: File squashfs tersebut diletakkan di dalam folder live/, lalu disiapkan bootloader (GRUB/Syslinux) agar OS bisa booting.
+- Generate ISO: Perintah xorriso dijalankan untuk memaketkan seluruh folder tersebut menjadi file NamamuOS-Debian13-amd64.iso.
+
+
+
+
