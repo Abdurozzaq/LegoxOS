@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=gnome-terminal -- /bin/bash -c "~/.local/bin/snap-post-install.sh"
+Exec=/bin/bash -c "~/.local/bin/snap-post-install.sh"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true

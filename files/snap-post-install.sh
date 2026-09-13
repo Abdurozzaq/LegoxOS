@@ -8,29 +8,57 @@ if [ -f "$MARKER_FILE" ]; then
     exit 0
 fi
 
-# We use gnome-terminal or any installed terminal to run this interactively 
-# so the user can see the progress on first boot.
-# This script itself runs the actual installation.
+# Ensure GUI is available (X11/Wayland)
+if [ -z "$DISPLAY" ]; then
+    # Fallback to CLI if no GUI
+    echo "=== LegoxOS Post-Install ==="
+    sudo snap install code --classic || true
+    sudo snap install postman || true
+    touch "$MARKER_FILE"
+    exit 0
+fi
 
-echo "=== LegoxOS Post-Install: Menginstal Aplikasi Bawaan ==="
-echo "Mohon tunggu, proses ini membutuhkan koneksi internet yang stabil."
+# Define the list of applications to install
+APPS=(
+  "dbeaver-ce|DBeaver (Database GUI)|snap"
+  "postman|Postman (API Testing)|snap"
+  "code|Visual Studio Code|snap --classic"
+  "android-studio|Android Studio|snap --classic"
+  "firefox|Firefox Browser|snap"
+  "telegram-desktop|Telegram Desktop|snap"
+  "discord|Discord|snap"
+)
 
-sudo snap install dbeaver-ce
-sudo snap install postman
-sudo snap install code --classic
-sudo snap install android-studio --classic
-sudo snap install rustdesk --classic || echo "Rustdesk mungkin butuh .deb manual"
-# Ungoogled Chromium & Firefox
-sudo snap install firefox
-# Ungoogled Chromium is usually not on snap, fallback to flatpak or manual if needed. Let's try snap or warn.
-sudo snap install ungoogled-chromium || echo "Ungoogled Chromium tidak di temukan di snap, harap install via flatpak"
+TOTAL_APPS=${#APPS[@]}
 
-sudo snap install telegram-desktop
-sudo snap install discord
-sudo snap install tailscale || echo "Tailscale sebaiknya diinstall via repo apt"
-sudo snap install bitwarden
-sudo snap install wps-office || echo "WPS Office tidak ditemukan di snap, harap install via flatpak/deb"
+(
+for i in "${!APPS[@]}"; do
+    IFS="|" read -r APP_CMD APP_NAME CMD_EXT <<< "${APPS[$i]}"
+    
+    # Hitung percentage
+    PERCENT=$(( i * 100 / TOTAL_APPS ))
+    
+    # Update text and percentage for zenity
+    echo "$PERCENT"
+    echo "# Mengunduh dan menginstal $APP_NAME..."
+    
+    # Proses instalasi (silent)
+    if ! sudo snap install $APP_CMD $CMD_EXT > /dev/null 2>&1; then
+        echo "# Peringatan: Gagal menginstal $APP_NAME. Melanjutkan..."
+        sleep 2
+    fi
+done
 
-echo "=== Instalasi Selesai ==="
+echo "100"
+echo "# Instalasi selesai! Sistem Anda siap digunakan."
+sleep 3
+) | zenity --progress \
+  --title="LegoxOS Auto-Installer" \
+  --text="Menyiapkan Lingkungan Developer..." \
+  --percentage=0 \
+  --width=500 \
+  --auto-close \
+  --no-cancel \
+  --window-icon=/usr/share/pixmaps/legoxos-logo.png
+
 touch "$MARKER_FILE"
-read -p "Tekan Enter untuk menutup..."

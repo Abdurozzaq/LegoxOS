@@ -59,7 +59,7 @@ Untuk mulai mem-build ISO:
    ```
 
 5. **Selesai!**
-   Tunggu prosesnya selesai. Anda akan mendapatkan file **LegoxOS-Debian13-amd64.iso** di dalam direktori yang sama, siap untuk di-boot menggunakan VirtualBox atau Rufus.
+   Tunggu prosesnya selesai. Anda akan mendapatkan file **LegoxOS-CinnamonX11-amd64.iso** di dalam direktori yang sama, siap untuk di-boot menggunakan VirtualBox atau Rufus.
 
 > **💡 TIP:**
 > Anda dapat meninjau file `LegoxOS_Progress.md` (jika ada) untuk melacak tahapan mana saja yang sudah diselesaikan dalam pengembangan.

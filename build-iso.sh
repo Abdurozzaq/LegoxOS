@@ -57,6 +57,6 @@ EOF
 
 # 6. Generate ISO
 echo "=== 6. Generate ISO dengan Xorriso ==="
-grub-mkrescue -o LegoxOS-Debian13-amd64.iso build/iso/
+grub-mkrescue -o LegoxOS-CinnamonX11-amd64.iso build/iso/
 
-echo "=== Selesai! ISO tersedia: LegoxOS-Debian13-amd64.iso ==="
+echo "=== Selesai! ISO tersedia: LegoxOS-CinnamonX11-amd64.iso ==="
