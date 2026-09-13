@@ -14,11 +14,21 @@ if [ -d /etc/calamares/branding/debian ]; then
     sed -i 's/shortVersionedName:  Debian 13/shortVersionedName:  LegoxOS 1.0/g' /etc/calamares/branding/debian/branding.desc
     sed -i 's/bootloaderEntryName: Debian/bootloaderEntryName: LegoxOS/g' /etc/calamares/branding/debian/branding.desc
     
-    # Gunakan logo LegoxOS untuk installer
-    if [ -f /usr/share/pixmaps/legoxos-logo.png ]; then
-        cp /usr/share/pixmaps/legoxos-logo.png /etc/calamares/branding/debian/logo.png
-    fi
+    # Hapus semua gambar debian yang ada di branding Calamares, ganti dengan wallpaper legoxos (sebagai welcome screen/slideshow)
+    find /etc/calamares/branding/debian -name "*.png" -exec cp /usr/share/backgrounds/legoxos-wallpaper.png {} \; || true
+    find /usr/share/calamares/branding/debian -name "*.png" -exec cp /usr/share/backgrounds/legoxos-wallpaper.png {} \; || true
+    
+    # Khusus untuk ikon dan logo, gunakan logo LegoxOS
+    cp /usr/share/pixmaps/legoxos-logo.png /etc/calamares/branding/debian/logo.png || true
+    cp /usr/share/pixmaps/legoxos-logo.png /etc/calamares/branding/debian/icon.png || true
+    cp /usr/share/pixmaps/legoxos-logo.png /usr/share/calamares/branding/debian/logo.png || true
+    cp /usr/share/pixmaps/legoxos-logo.png /usr/share/calamares/branding/debian/icon.png || true
 fi
+
+# Hapus shortcut bawaan "Install Debian"
+rm -f /usr/share/applications/install-debian.desktop || true
+rm -f /etc/skel/Desktop/install-debian.desktop || true
+rm -f /root/Desktop/install-debian.desktop || true
 
 # Buat shortcut desktop untuk installer
 mkdir -p /etc/skel/Desktop

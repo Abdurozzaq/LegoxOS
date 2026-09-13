@@ -50,6 +50,14 @@ glib-compile-schemas /usr/share/glib-2.0/schemas/
 update-alternatives --install /usr/share/images/desktop-base/desktop-background desktop-background /usr/share/backgrounds/legoxos-wallpaper.png 100 || true
 update-alternatives --set desktop-background /usr/share/backgrounds/legoxos-wallpaper.png || true
 
+# PEMBASMIAN BRANDING DEBIAN SECARA BRUTAL (Login, Lockscreen, Fallback)
+if [ -d /usr/share/desktop-base ]; then
+    find /usr/share/desktop-base -type f \( -name "*.svg" -o -name "*.png" \) -exec sh -c 'cp /usr/share/backgrounds/legoxos-wallpaper.png "$1"' _ {} \; || true
+fi
+if [ -d /usr/share/images/desktop-base ]; then
+    find /usr/share/images/desktop-base -type f \( -name "*.svg" -o -name "*.png" \) -exec sh -c 'cp /usr/share/backgrounds/legoxos-wallpaper.png "$1"' _ {} \; || true
+fi
+
 # Ganti ikon Start Menu Cinnamon bawaan Debian dengan logo LegoxOS
 # Cinnamon menggunakan icon 'start-here' atau logo Debian
 cp /usr/share/pixmaps/legoxos-logo.png /usr/share/cinnamon/theme/menu.svg || true

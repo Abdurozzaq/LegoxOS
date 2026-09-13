@@ -20,13 +20,13 @@ fi
 
 # Define the list of applications to install
 APPS=(
-  "dbeaver-ce|DBeaver (Database GUI)|snap"
-  "postman|Postman (API Testing)|snap"
-  "code|Visual Studio Code|snap --classic"
-  "android-studio|Android Studio|snap --classic"
-  "firefox|Firefox Browser|snap"
-  "telegram-desktop|Telegram Desktop|snap"
-  "discord|Discord|snap"
+  "dbeaver-ce|DBeaver (Database GUI)|"
+  "postman|Postman (API Testing)|"
+  "code|Visual Studio Code|--classic"
+  "android-studio|Android Studio|--classic"
+  "firefox|Firefox Browser|"
+  "telegram-desktop|Telegram Desktop|"
+  "discord|Discord|"
 )
 
 TOTAL_APPS=${#APPS[@]}
