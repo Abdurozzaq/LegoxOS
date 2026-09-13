@@ -16,7 +16,7 @@ apt-get update
 apt-get upgrade -y
 
 # Instalasi Kebutuhan Live CD
-apt-get install -y live-boot live-config systemd-sysv linux-image-amd64 sudo nano curl wget gnupg2 ca-certificates software-properties-common
+apt-get install -y live-boot live-config systemd-sysv linux-image-amd64 sudo nano curl wget gnupg2 ca-certificates
 
 # Instalasi Desktop Environment (Cinnamon & X11)
 apt-get install -y cinnamon-core xorg lightdm network-manager-gnome
