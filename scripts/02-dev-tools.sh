@@ -6,15 +6,16 @@ echo "=== [2/4] Menginstal Dev Tools & Multi-Environment ==="
 export DEBIAN_FRONTEND=noninteractive
 export HOME=/root
 
-# 1. Multi Node.js (NVM)
-echo "=> Menginstal NVM"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-# Menambahkan ke skeleton profile agar setiap user baru dapat NVM
-cat << 'EOF' >> /etc/skel/.bashrc
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-EOF
+# 1. Web Dev Environment: Node.js (FNM, PNPM, YARN)
+echo "=> Menginstal Web Dev Environment (Node.js via FNM)"
+apt-get install -y nodejs npm unzip
+npm install -g pnpm yarn
+
+# Install FNM (Fast Node Manager) secara global
+wget https://github.com/Schniz/fnm/releases/latest/download/fnm-linux.zip -O /tmp/fnm-linux.zip
+unzip /tmp/fnm-linux.zip -d /usr/local/bin/
+chmod +x /usr/local/bin/fnm
+rm -f /tmp/fnm-linux.zip
 
 # 2. Multi Python (PyEnv)
 echo "=> Menginstal PyEnv dependencies"
@@ -46,21 +47,34 @@ apt-get update
 # Menginstal beberapa versi umum (8.1, 8.2, 8.3)
 apt-get install -y php8.1 php8.2 php8.3 composer || echo "Sury PPA tidak tersedia untuk Trixie, mengabaikan..."
 
-# 5. Android SDK & Platform Tools
-echo "=> Menginstal Android SDK Base & Platform Tools"
-apt-get install -y android-sdk adb fastboot
+
 
 # 6. Hermes Agent CLI
 echo "=> Menyiapkan placeholder untuk Hermes Agent CLI"
 # Karena link spesifik tidak diberikan, kita asumsikan instalasi via npm (sebagai contoh) atau letakkan instruksi.
 # apt-get install -y hermes-cli # contoh jika ada di repo
 
-# 7. Starship Terminal Prompt
+# 7. Rust-based Terminal Tools (eza, bat, fzf, lazydocker) & Starship
+echo "=> Menginstal Terminal Tools Modern"
+apt-get install -y bat fzf
+# Install eza (modern ls)
+wget -c https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz -O - | tar xz -C /usr/local/bin
+# Install lazydocker
+curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+mv $HOME/.local/bin/lazydocker /usr/local/bin/ || true
+
 echo "=> Menginstal Starship Prompt"
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
 # 8. Aplikasi Native GUI (Baked-in ISO)
-echo "=> Menginstal Native GUI Apps (VSCode, DBeaver, Firefox, Telegram, Discord, Postman, Android Studio, VLC, Spotify)"
+echo "=> Menginstal Native GUI Apps (VSCode, DBeaver, Firefox, Chromium, Telegram, Discord, Postman, VLC, Spotify, OnlyOffice)"
+
+# Office Productivity (OnlyOffice)
+echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+wget -qO - https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE | gpg --dearmor > /etc/apt/trusted.gpg.d/onlyoffice.gpg
+echo "deb https://download.onlyoffice.com/repo/debian squeeze main" > /etc/apt/sources.list.d/onlyoffice.list
+apt-get update
+apt-get install -y onlyoffice-desktopeditors
 
 # Multimedia & Codec (VLC, ffmpeg, Gstreamer)
 apt-get install -y vlc ffmpeg gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav libavcodec-extra
@@ -71,8 +85,8 @@ echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list
 apt-get update
 apt-get install -y spotify-client
 
-# Firefox & Telegram
-apt-get install -y firefox-esr telegram-desktop
+# Firefox, Chromium & Telegram
+apt-get install -y firefox-esr chromium telegram-desktop
 
 # VSCode
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/packages.microsoft.gpg
@@ -108,21 +122,39 @@ Categories=Development;
 EOF
 fi
 
-# Android Studio (Using direct link, fallback to skip if link expires)
-wget "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-linux.tar.gz" -O android-studio.tar.gz || true
-if [ -f android-studio.tar.gz ]; then
-  tar -xzf android-studio.tar.gz -C /opt || true
-  rm -f android-studio.tar.gz
-  ln -sf /opt/android-studio/bin/studio.sh /usr/bin/android-studio || true
-  cat <<EOF > /usr/share/applications/android-studio.desktop
+
+
+# 9. LegoxOS Database Panel (Portainer Docker GUI)
+echo "=> Mengonfigurasi LegoxOS Database Panel (Portainer)"
+cat << 'EOF' > /usr/local/bin/legoxos-db-panel
+#!/bin/bash
+echo "Memeriksa Docker Daemon..."
+if ! systemctl is-active --quiet docker; then
+    echo "Docker belum berjalan. Memulai Docker..."
+    sudo systemctl start docker
+fi
+
+echo "Mengecek apakah Portainer sudah berjalan..."
+if ! sudo docker ps | grep -q portainer; then
+    echo "Membuat volume dan menjalankan container Portainer..."
+    sudo docker volume create portainer_data || true
+    sudo docker run -d -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+fi
+
+echo "Membuka GUI LegoxOS Database Panel (Portainer)..."
+xdg-open http://localhost:9000
+EOF
+chmod +x /usr/local/bin/legoxos-db-panel
+
+cat << 'EOF' > /usr/share/applications/legoxos-db-panel.desktop
 [Desktop Entry]
-Name=Android Studio
-Exec=/opt/android-studio/bin/studio.sh
-Icon=/opt/android-studio/bin/studio.png
+Name=LegoxOS DB Panel
+Comment=Manajer Database Multi-Versi berbasis Docker (Portainer)
+Exec=gnome-terminal -- bash -c "/usr/local/bin/legoxos-db-panel; sleep 2"
+Icon=docker
 Terminal=false
 Type=Application
-Categories=Development;
+Categories=Development;Database;
 EOF
-fi
 
 echo "=== [2/4] Selesai ==="

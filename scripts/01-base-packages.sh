@@ -15,8 +15,8 @@ EOF
 apt-get update
 apt-get upgrade -y
 
-# Instalasi Software Dasar & Dukungan Jaringan
-apt-get install -y sudo curl wget nano vim git jq htop net-tools software-properties-common dirmngr apt-transport-https ca-certificates
+# Instalasi Kebutuhan Live CD & Dasar
+apt-get install -y locales live-boot live-config systemd-sysv linux-image-amd64 sudo curl wget nano vim git jq htop net-tools dirmngr apt-transport-https ca-certificates gnupg2
 
 # Konfigurasi Locale untuk menghilangkan warning "Cannot set LC_CTYPE..."
 sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen
@@ -32,8 +32,8 @@ apt-get install -y flameshot diodon fastfetch calamares calamares-settings-debia
 # Instalasi Git & Docker
 apt-get install -y git docker.io docker-compose
 
-# Instalasi Database (PostgreSQL, MariaDB, Redis)
-apt-get install -y postgresql mariadb-server redis-server
+# Instalasi Web Server (Nginx)
+apt-get install -y nginx
 
 
 

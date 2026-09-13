@@ -50,7 +50,7 @@ set color_normal=light-gray/black
 set color_highlight=white/black
 
 menuentry "Start LegoxOS Live & Install" {
-    linux /live/vmlinuz boot=live
+    linux /live/vmlinuz boot=live quiet splash
     initrd /live/initrd
 }
 EOF

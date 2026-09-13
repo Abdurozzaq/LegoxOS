@@ -12,20 +12,31 @@ gtk-icon-theme-name=Tela-dark
 gtk-application-prefer-dark-theme=1
 EOF
 
-# Install Tela Icon Theme (Sangat modern & cocok untuk Dark Mode) via Github, beserta dependencies
-apt-get install -y lightdm-gtk-greeter gtk3-nocsd
+# Install Tema, ZSH, Plymouth, dan Nerd Fonts dependencies
+apt-get install -y slick-greeter gtk3-nocsd zsh zsh-autosuggestions zsh-syntax-highlighting plymouth plymouth-themes unzip wget curl imagemagick fonts-ubuntu
+
+# Install JetBrains Mono Nerd Font
+echo "=> Menginstal JetBrains Mono Nerd Font"
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip -O /tmp/JetBrainsMono.zip
+mkdir -p /usr/share/fonts/JetBrainsMono
+unzip -o /tmp/JetBrainsMono.zip -d /usr/share/fonts/JetBrainsMono
+fc-cache -fv
+rm -f /tmp/JetBrainsMono.zip
 git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/Tela-icon-theme
 /tmp/Tela-icon-theme/install.sh -a -d /usr/share/icons
 rm -rf /tmp/Tela-icon-theme
 
-# Konfigurasi LightDM Login Screen (Background Wallpaper & Logo)
+# Generate Text Logo "LegoxOS" menggunakan Ubuntu Bold
+echo "=> Membuat logo teks dengan font Ubuntu Bold"
+convert -background none -fill white -font /usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf -pointsize 64 label:"LegoxOS" /usr/share/pixmaps/legoxos-text-logo.png || true
+
+# Konfigurasi LightDM Login Screen (menggunakan slick-greeter bawaan Cinnamon/Mint)
 mkdir -p /etc/lightdm
-cat <<EOF > /etc/lightdm/lightdm-gtk-greeter.conf
-[greeter]
-background = /usr/share/backgrounds/legoxos-wallpaper.png
-default-user-image = /usr/share/pixmaps/legoxos-logo.png
-theme-name = Adwaita-dark
-icon-theme-name = Tela-dark
+cat <<EOF > /etc/lightdm/slick-greeter.conf
+[Greeter]
+background=/usr/share/backgrounds/legoxos-wallpaper.png
+draw-user-backgrounds=false
+logo=/usr/share/pixmaps/legoxos-text-logo.png
 EOF
 
 # Setting gschema overrides (Cara paling ampuh untuk Cinnamon & GNOME)
@@ -44,6 +55,9 @@ icon-theme='Tela-dark'
 
 [org.cinnamon.theme]
 name='cinnamon-dark'
+
+[org.cinnamon.applets.menu]
+custom-icon-name='/usr/share/pixmaps/legoxos-logo.png'
 EOF
 
 # Compile schemas
@@ -72,27 +86,35 @@ find /usr/share/icons/Tela* -name "debian-logo.svg" -exec sh -c 'cp /usr/share/p
 
 # Konfigurasi Identitas OS (OS Release)
 cat <<EOF > /etc/os-release
-PRETTY_NAME="LegoxOS 1.0 (Batik Edition)"
+PRETTY_NAME="LegoxOS 1.0 (Developer Edition)"
 NAME="LegoxOS"
 VERSION_ID="1.0"
-VERSION="1.0 (Batik Edition)"
-VERSION_CODENAME=trixie
+VERSION="1.0"
+VERSION_CODENAME=trixie 
 ID=legoxos
-ID_LIKE=debian
-HOME_URL="https://legoxos.org/"
-SUPPORT_URL="https://legoxos.org/support"
-BUG_REPORT_URL="https://legoxos.org/bugs"
+ID_LIKE=debian 
+HOME_URL="https://github.com/Abdurozzaq/LegoxOS"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
 EOF
 
 cat <<EOF > /etc/lsb-release
 DISTRIB_ID=LegoxOS
 DISTRIB_RELEASE=1.0
-DISTRIB_CODENAME=batik
-DISTRIB_DESCRIPTION="LegoxOS 1.0 (Batik Edition)"
+DISTRIB_CODENAME=trixie
+DISTRIB_DESCRIPTION="LegoxOS 1.0 (Developer Edition)"
 EOF
 
 echo "LegoxOS 1.0 \n \l" > /etc/issue
-echo "LegoxOS 1.0" > /etc/issue.net
+echo "LegoxOS 1.0 \n \l" > /etc/issue.net
+
+# Konfigurasi Branding GRUB untuk OS yang sudah terinstal
+if [ -f /etc/default/grub ]; then
+    sed -i 's/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="LegoxOS"/g' /etc/default/grub
+else
+    echo 'GRUB_DISTRIBUTOR="LegoxOS"' >> /etc/default/grub
+fi
+update-grub || true
 
 # Konfigurasi Fastfetch Custom (Menampilkan Network IP)
 mkdir -p /etc/skel/.config/fastfetch
@@ -132,12 +154,39 @@ EOF
 
 cp /etc/skel/.config/fastfetch/config.jsonc /root/.config/fastfetch/config.jsonc
 
-# Tambahkan Fastfetch otomatis ketika buka terminal
-echo "fastfetch" >> /etc/skel/.bashrc
-echo "fastfetch" >> /root/.bashrc
+# Konfigurasi Plymouth (Animasi Booting)
+echo "=> Mengonfigurasi Plymouth Boot Animation"
+plymouth-set-default-theme -R spinner || true
+# Timpa watermark spinner dengan logo Teks LegoxOS
+cp /usr/share/pixmaps/legoxos-text-logo.png /usr/share/plymouth/themes/spinner/watermark.png || true
+update-initramfs -u || true
 
-# Aktifkan Starship Prompt
-echo 'eval "$(starship init bash)"' >> /etc/skel/.bashrc
-echo 'eval "$(starship init bash)"' >> /root/.bashrc
+# Konfigurasi ZSH sebagai Shell Default
+echo "=> Mengonfigurasi ZSH"
+# Ubah default shell untuk skeleton (user baru)
+sed -i 's|SHELL=/bin/bash|SHELL=/bin/zsh|g' /etc/default/useradd
+# Ubah default shell untuk root
+chsh -s /bin/zsh root
+
+cat << 'EOF' > /etc/skel/.zshrc
+# Load ZSH Plugins
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Alias Modern
+alias ls="eza --icons"
+alias ll="eza --icons -l"
+alias cat="batcat"
+
+# Load Starship & Fastfetch
+eval "$(starship init zsh)"
+fastfetch
+
+# Load FNM
+eval "$(fnm env)"
+EOF
+
+# Copy ke root
+cp /etc/skel/.zshrc /root/.zshrc
 
 echo "=== [4/4] Selesai ==="
