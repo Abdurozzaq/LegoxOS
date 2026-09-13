@@ -60,12 +60,7 @@ build {
       "chroot build/rootfs env DEBIAN_FRONTEND=noninteractive /bin/bash /tmp/packer-scripts/04-ui-theme.sh",
       "chroot build/rootfs env DEBIAN_FRONTEND=noninteractive /bin/bash /tmp/packer-scripts/05-installer.sh",
       "",
-      "echo '==> Setting up snap post-install scripts...'",
-      "mkdir -p build/rootfs/etc/skel/.config/autostart",
-      "mkdir -p build/rootfs/etc/skel/.local/bin",
-      "cp files/snap-post-install.sh build/rootfs/etc/skel/.local/bin/snap-post-install.sh",
-      "cp files/snap-post-install.desktop build/rootfs/etc/skel/.config/autostart/snap-post-install.desktop",
-      "chmod +x build/rootfs/etc/skel/.local/bin/snap-post-install.sh"
+
     ]
   }
 }

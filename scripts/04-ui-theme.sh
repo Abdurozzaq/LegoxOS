@@ -8,12 +8,15 @@ mkdir -p /etc/skel/.config/gtk-3.0
 cat <<EOF > /etc/skel/.config/gtk-3.0/settings.ini
 [Settings]
 gtk-theme-name=Adwaita-dark
-gtk-icon-theme-name=Papirus-Dark
+gtk-icon-theme-name=Tela-dark
 gtk-application-prefer-dark-theme=1
 EOF
 
-# Install Papirus icon theme (sebagai alternatif Xiaomi Icon Theme jika tidak ada link spesifik)
-apt-get install -y papirus-icon-theme lightdm-gtk-greeter
+# Install Tela Icon Theme (Sangat modern & cocok untuk Dark Mode) via Github, beserta dependencies
+apt-get install -y lightdm-gtk-greeter gtk3-nocsd
+git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/Tela-icon-theme
+/tmp/Tela-icon-theme/install.sh -a -d /usr/share/icons
+rm -rf /tmp/Tela-icon-theme
 
 # Konfigurasi LightDM Login Screen (Background Wallpaper & Logo)
 mkdir -p /etc/lightdm
@@ -22,7 +25,7 @@ cat <<EOF > /etc/lightdm/lightdm-gtk-greeter.conf
 background = /usr/share/backgrounds/legoxos-wallpaper.png
 default-user-image = /usr/share/pixmaps/legoxos-logo.png
 theme-name = Adwaita-dark
-icon-theme-name = Papirus-Dark
+icon-theme-name = Tela-dark
 EOF
 
 # Setting gschema overrides (Cara paling ampuh untuk Cinnamon & GNOME)
@@ -37,7 +40,7 @@ picture-uri='file:///usr/share/backgrounds/legoxos-wallpaper.png'
 
 [org.cinnamon.desktop.interface]
 gtk-theme='Adwaita-dark'
-icon-theme='Papirus-Dark'
+icon-theme='Tela-dark'
 
 [org.cinnamon.theme]
 name='cinnamon-dark'
@@ -63,9 +66,9 @@ fi
 cp /usr/share/pixmaps/legoxos-logo.png /usr/share/cinnamon/theme/menu.svg || true
 cp /usr/share/pixmaps/legoxos-logo.png /usr/share/cinnamon/theme/menu-symbolic.svg || true
 
-# Ganti ikon start-here di tema Papirus
-find /usr/share/icons/Papirus -name "start-here.svg" -exec sh -c 'cp /usr/share/pixmaps/legoxos-logo.png "$1"' _ {} \; || true
-find /usr/share/icons/Papirus -name "debian-logo.svg" -exec sh -c 'cp /usr/share/pixmaps/legoxos-logo.png "$1"' _ {} \; || true
+# Ganti ikon start-here di tema Tela
+find /usr/share/icons/Tela* -name "start-here.svg" -exec sh -c 'cp /usr/share/pixmaps/legoxos-logo.png "$1"' _ {} \; || true
+find /usr/share/icons/Tela* -name "debian-logo.svg" -exec sh -c 'cp /usr/share/pixmaps/legoxos-logo.png "$1"' _ {} \; || true
 
 # Konfigurasi Identitas OS (OS Release)
 cat <<EOF > /etc/os-release
@@ -134,7 +137,7 @@ echo "fastfetch" >> /etc/skel/.bashrc
 echo "fastfetch" >> /root/.bashrc
 
 # Aktifkan Starship Prompt
-echo 'eval "\$(starship init bash)"' >> /etc/skel/.bashrc
-echo 'eval "\$(starship init bash)"' >> /root/.bashrc
+echo 'eval "$(starship init bash)"' >> /etc/skel/.bashrc
+echo 'eval "$(starship init bash)"' >> /root/.bashrc
 
 echo "=== [4/4] Selesai ==="

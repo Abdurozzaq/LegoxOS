@@ -25,8 +25,10 @@ if [ -d /etc/calamares/branding/debian ]; then
     cp /usr/share/pixmaps/legoxos-logo.png /usr/share/calamares/branding/debian/icon.png || true
 fi
 
-# Hapus shortcut bawaan "Install Debian"
+# Hapus shortcut bawaan "Install Debian" / Calamares murni agar live-config tidak meng-copy nya ke desktop
 rm -f /usr/share/applications/install-debian.desktop || true
+rm -f /usr/share/applications/debian-installer-launcher.desktop || true
+rm -f /usr/share/applications/calamares.desktop || true
 rm -f /etc/skel/Desktop/install-debian.desktop || true
 rm -f /root/Desktop/install-debian.desktop || true
 

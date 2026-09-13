@@ -59,4 +59,70 @@ echo "=> Menyiapkan placeholder untuk Hermes Agent CLI"
 echo "=> Menginstal Starship Prompt"
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
+# 8. Aplikasi Native GUI (Baked-in ISO)
+echo "=> Menginstal Native GUI Apps (VSCode, DBeaver, Firefox, Telegram, Discord, Postman, Android Studio, VLC, Spotify)"
+
+# Multimedia & Codec (VLC, ffmpeg, Gstreamer)
+apt-get install -y vlc ffmpeg gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav libavcodec-extra
+
+# Spotify (Via Repositori Resmi)
+curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list
+apt-get update
+apt-get install -y spotify-client
+
+# Firefox & Telegram
+apt-get install -y firefox-esr telegram-desktop
+
+# VSCode
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/packages.microsoft.gpg
+echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list
+apt-get update
+apt-get install -y code
+
+# DBeaver
+wget -O /usr/share/keyrings/dbeaver.gpg.key https://dbeaver.io/debs/dbeaver.gpg.key
+echo "deb [signed-by=/usr/share/keyrings/dbeaver.gpg.key] https://dbeaver.io/debs/dbeaver-ce /" > /etc/apt/sources.list.d/dbeaver.list
+apt-get update
+apt-get install -y dbeaver-ce
+
+# Discord
+wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb || true
+apt-get install -y ./discord.deb || true
+rm -f discord.deb
+
+# Postman
+wget "https://dl.pstmn.io/download/latest/linux64" -O postman.tar.gz || true
+if [ -f postman.tar.gz ]; then
+  tar -xzf postman.tar.gz -C /opt || true
+  rm -f postman.tar.gz
+  ln -sf /opt/Postman/Postman /usr/bin/postman || true
+  cat <<EOF > /usr/share/applications/postman.desktop
+[Desktop Entry]
+Name=Postman
+Exec=/opt/Postman/Postman
+Icon=/opt/Postman/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+EOF
+fi
+
+# Android Studio (Using direct link, fallback to skip if link expires)
+wget "https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.1.1.12/android-studio-2024.1.1.12-linux.tar.gz" -O android-studio.tar.gz || true
+if [ -f android-studio.tar.gz ]; then
+  tar -xzf android-studio.tar.gz -C /opt || true
+  rm -f android-studio.tar.gz
+  ln -sf /opt/android-studio/bin/studio.sh /usr/bin/android-studio || true
+  cat <<EOF > /usr/share/applications/android-studio.desktop
+[Desktop Entry]
+Name=Android Studio
+Exec=/opt/android-studio/bin/studio.sh
+Icon=/opt/android-studio/bin/studio.png
+Terminal=false
+Type=Application
+Categories=Development;
+EOF
+fi
+
 echo "=== [2/4] Selesai ==="
