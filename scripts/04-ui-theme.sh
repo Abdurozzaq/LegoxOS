@@ -83,8 +83,8 @@ EOF
 echo "LegoxOS 1.0 \n \l" > /etc/issue
 echo "LegoxOS 1.0" > /etc/issue.net
 
-# Tambahkan Neofetch otomatis ketika buka terminal
-echo "neofetch --ascii /usr/share/pixmaps/legoxos-ascii.txt --ascii_colors 4 2" >> /etc/skel/.bashrc
-echo "neofetch --ascii /usr/share/pixmaps/legoxos-ascii.txt --ascii_colors 4 2" >> /root/.bashrc
+# Tambahkan Fastfetch otomatis ketika buka terminal
+echo "fastfetch --logo /usr/share/pixmaps/legoxos-ascii.txt --logo-color-1 blue --logo-color-2 green" >> /etc/skel/.bashrc
+echo "fastfetch --logo /usr/share/pixmaps/legoxos-ascii.txt --logo-color-1 blue --logo-color-2 green" >> /root/.bashrc
 
 echo "=== [4/4] Selesai ==="

@@ -27,7 +27,7 @@ update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 apt-get install -y cinnamon dbus-x11 gnome-terminal xorg lightdm network-manager-gnome
 
 # Instalasi Utilities (Screenshot, Clipboard History, Info, Installer, GUI Tools)
-apt-get install -y flameshot diodon neofetch fastfetch calamares calamares-settings-debian zenity
+apt-get install -y flameshot diodon fastfetch calamares calamares-settings-debian zenity
 
 # Instalasi Git & Docker
 apt-get install -y git docker.io docker-compose
