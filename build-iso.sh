@@ -19,15 +19,9 @@ debootstrap --arch=amd64 trixie build/rootfs http://deb.debian.org/debian/
 
 # 2. Packer Provisioning
 echo "=== 2. Packer Provisioning ==="
-# Mount temporary filesystems
-mount --bind /dev build/rootfs/dev
-mount --bind /run build/rootfs/run
 # Run packer
-packer init legoxos.pkr.hcl
+packer init legoxos.pkr.hcl || true
 packer build legoxos.pkr.hcl
-# Unmount
-umount build/rootfs/run
-umount build/rootfs/dev
 
 # Bersihkan cache chroot
 chroot build/rootfs apt-get clean

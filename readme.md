@@ -54,7 +54,6 @@ Untuk mulai mem-build ISO:
 4. **Jalankan Proses Build**
    Eksekusi script build (proses ini **harus** menggunakan `sudo`):
    ```bash
-   sudo packer build legoxos.pkr.hcl
    sudo ./build-iso.sh
    ```
 
