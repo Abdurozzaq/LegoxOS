@@ -55,4 +55,8 @@ echo "=> Menyiapkan placeholder untuk Hermes Agent CLI"
 # Karena link spesifik tidak diberikan, kita asumsikan instalasi via npm (sebagai contoh) atau letakkan instruksi.
 # apt-get install -y hermes-cli # contoh jika ada di repo
 
+# 7. Starship Terminal Prompt
+echo "=> Menginstal Starship Prompt"
+curl -sS https://starship.rs/install.sh | sh -s -- -y
+
 echo "=== [2/4] Selesai ==="

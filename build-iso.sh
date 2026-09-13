@@ -49,8 +49,8 @@ background_image /boot/grub/splash.png
 set color_normal=light-gray/black
 set color_highlight=white/black
 
-menuentry "Start LegoxOS Live" {
-    linux /live/vmlinuz boot=live quiet splash
+menuentry "Start LegoxOS Live & Install" {
+    linux /live/vmlinuz boot=live
     initrd /live/initrd
 }
 EOF

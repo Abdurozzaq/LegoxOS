@@ -91,8 +91,50 @@ EOF
 echo "LegoxOS 1.0 \n \l" > /etc/issue
 echo "LegoxOS 1.0" > /etc/issue.net
 
+# Konfigurasi Fastfetch Custom (Menampilkan Network IP)
+mkdir -p /etc/skel/.config/fastfetch
+mkdir -p /root/.config/fastfetch
+
+cat <<EOF > /etc/skel/.config/fastfetch/config.jsonc
+{
+  "\$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "source": "/usr/share/pixmaps/legoxos-ascii.txt",
+    "color": {"1": "blue", "2": "green"}
+  },
+  "display": {
+    "separator": " ➜  "
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "terminal",
+    "cpu",
+    "gpu",
+    "memory",
+    "disk",
+    "localip",
+    "publicip",
+    "break",
+    "colors"
+  ]
+}
+EOF
+
+cp /etc/skel/.config/fastfetch/config.jsonc /root/.config/fastfetch/config.jsonc
+
 # Tambahkan Fastfetch otomatis ketika buka terminal
-echo "fastfetch --logo /usr/share/pixmaps/legoxos-ascii.txt --logo-color-1 blue --logo-color-2 green" >> /etc/skel/.bashrc
-echo "fastfetch --logo /usr/share/pixmaps/legoxos-ascii.txt --logo-color-1 blue --logo-color-2 green" >> /root/.bashrc
+echo "fastfetch" >> /etc/skel/.bashrc
+echo "fastfetch" >> /root/.bashrc
+
+# Aktifkan Starship Prompt
+echo 'eval "\$(starship init bash)"' >> /etc/skel/.bashrc
+echo 'eval "\$(starship init bash)"' >> /root/.bashrc
 
 echo "=== [4/4] Selesai ==="
