@@ -19,7 +19,7 @@ apt-get upgrade -y
 apt-get install -y live-boot live-config systemd-sysv linux-image-amd64 sudo nano curl wget gnupg2 ca-certificates
 
 # Instalasi Desktop Environment (Cinnamon & X11)
-apt-get install -y cinnamon-core xorg lightdm network-manager-gnome
+apt-get install -y cinnamon dbus-x11 gnome-terminal xorg lightdm network-manager-gnome
 
 # Instalasi Utilities (Screenshot, Clipboard History)
 apt-get install -y flameshot diodon

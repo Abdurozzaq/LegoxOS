@@ -38,9 +38,16 @@ cp build/rootfs/boot/initrd.img-* build/iso/live/initrd
 
 # 5. Konfigurasi GRUB
 echo "=== 5. Menyiapkan Bootloader GRUB ==="
+cp assets/wallpaper.png build/iso/boot/grub/splash.png
 cat <<EOF > build/iso/boot/grub/grub.cfg
+insmod all_video
+insmod png
 set default=0
 set timeout=5
+
+background_image /boot/grub/splash.png
+set color_normal=light-gray/black
+set color_highlight=white/black
 
 menuentry "Start LegoxOS Live" {
     linux /live/vmlinuz boot=live quiet splash

@@ -54,7 +54,8 @@ Untuk mulai mem-build ISO:
 4. **Jalankan Proses Build**
    Eksekusi script build (proses ini **harus** menggunakan `sudo`):
    ```bash
-   sudo ./build-iso.sh
+   sudo rm -rf build/rootfs build/iso/live/filesystem.squashfs
+   sudo sh ./build-iso.sh
    ```
 
 5. **Selesai!**
