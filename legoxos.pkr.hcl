@@ -1,9 +1,6 @@
 packer {
   required_plugins {
-    chroot = {
-      version = ">= 0.1.0"
-      source  = "github.com/hashicorp/chroot"
-    }
+
   }
 }
 

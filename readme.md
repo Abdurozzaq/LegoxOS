@@ -6,7 +6,7 @@ Sebuah custom Linux Distro berbasis Debian 13, dirancang dan dikonfigurasi secar
 ## Arsitektur & File Konfigurasi
 
 ### 1. Packer Configuration
-- [`legoxos.pkr.hcl`](./legoxos.pkr.hcl): Konfigurasi Packer yang bertindak sebagai "Tukang Masak". Menggunakan plugin `chroot` untuk membangun OS secara langsung di dalam direktori `build/rootfs`.
+- [`legoxos.pkr.hcl`](./legoxos.pkr.hcl): Konfigurasi Packer yang bertindak sebagai "Tukang Masak". Menggunakan builder bawaan `chroot` (hanya tersedia di OS Linux) untuk membangun OS secara langsung di dalam direktori `build/rootfs`.
 
 ### 2. Provisioning Scripts (Tukang Masak - Packer)
 - [`scripts/01-base-packages.sh`](./scripts/01-base-packages.sh): Menginstal paket dasar Live CD, Cinnamon DE, Docker, Git, dan Database (PostgreSQL, MariaDB, Redis).
@@ -28,8 +28,10 @@ Sebuah custom Linux Distro berbasis Debian 13, dirancang dan dikonfigurasi secar
 
 ## Langkah Selanjutnya (Cara Build)
 
-> **⚠️ PERHATIAN: Lingkungan Build**
-> Semua skrip yang berinteraksi dengan root file system (seperti `debootstrap`, `chroot`, `mksquashfs`) membutuhkan sistem **Linux Native**. Jika Anda menggunakan Windows, pastikan menggunakan **WSL2** dengan distro Debian/Ubuntu, atau menggunakan Virtual Machine Linux.
+> **⚠️ PERHATIAN: Lingkungan Build (Windows tidak didukung langsung)**
+> Semua skrip dan alat yang berinteraksi dengan root file system (seperti `debootstrap`, `chroot`, `mksquashfs`) membutuhkan sistem **Linux Native**.
+> - **Packer Chroot Builder:** Builder `chroot` di Packer adalah bawaan (*built-in*) khusus untuk OS Linux. Jika Anda mencoba menjalankan `packer init` atau `packer build` langsung di Command Prompt/PowerShell Windows, Anda akan mendapati error seperti `Unknown source type chroot` atau `Failed getting the "github.com/hashicorp/chroot" plugin`. Ini wajar karena builder `chroot` tidak di-bundle pada Packer versi Windows.
+> - **Solusi:** Jika Anda menggunakan OS Windows, pastikan seluruh proses build dijalankan sepenuhnya melalui **WSL2** (Windows Subsystem for Linux) dengan distro Debian/Ubuntu, atau menggunakan Virtual Machine Linux.
 
 Untuk mulai mem-build ISO:
 
@@ -52,6 +54,7 @@ Untuk mulai mem-build ISO:
 4. **Jalankan Proses Build**
    Eksekusi script build (proses ini **harus** menggunakan `sudo`):
    ```bash
+   sudo packer build legoxos.pkr.hcl
    sudo ./build-iso.sh
    ```
 
