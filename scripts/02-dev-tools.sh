@@ -81,7 +81,7 @@ apt-get install -y vlc ffmpeg gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly
 
 
 # Firefox, Chromium & Telegram
-apt-get install -y firefox-esr chromium telegram-desktop
+apt-get install -y firefox-esr chromium
 
 # VSCode
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/packages.microsoft.gpg
