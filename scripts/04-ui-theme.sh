@@ -47,7 +47,7 @@ picture-uri='file:///usr/share/backgrounds/legoxos-wallpaper.png'
 picture-options='zoom'
 
 [org.cinnamon.desktop.screensaver]
-picture-uri='file:///usr/share/backgrounds/legoxos-wallpaper.png'
+picture-uri='file:///usr/share/backgrounds/legoxos-lockscreen.jpg'
 
 [org.cinnamon.desktop.interface]
 gtk-theme='Adwaita-dark'
@@ -63,9 +63,20 @@ EOF
 # Compile schemas
 glib-compile-schemas /usr/share/glib-2.0/schemas/
 
-# Update Debian alternatives untuk wallpaper utama (berpengaruh ke semua DE & Login screen)
+# Update Debian alternatives untuk wallpaper utama (berpengaruh ke semua DE)
 update-alternatives --install /usr/share/images/desktop-base/desktop-background desktop-background /usr/share/backgrounds/legoxos-wallpaper.png 100 || true
 update-alternatives --set desktop-background /usr/share/backgrounds/legoxos-wallpaper.png || true
+
+# Konfigurasi LightDM Wallpaper
+mkdir -p /etc/lightdm
+cat <<EOF > /etc/lightdm/lightdm-gtk-greeter.conf
+[greeter]
+background=/usr/share/backgrounds/legoxos-lockscreen.jpg
+EOF
+cat <<EOF > /etc/lightdm/slick-greeter.conf
+[Greeter]
+background=/usr/share/backgrounds/legoxos-lockscreen.jpg
+EOF
 
 # PEMBASMIAN BRANDING DEBIAN SECARA BRUTAL (Login, Lockscreen, Fallback)
 if [ -d /usr/share/desktop-base ]; then

@@ -156,14 +156,19 @@
                     <h3 data-i18n="portainer_what_title">Why Portainer?</h3>
                     <p data-i18n="portainer_what_desc">Instead of installing MySQL, PostgreSQL, or Redis manually on your host machine, LegoxOS uses Portainer to manage them inside Docker containers. This keeps your system clean and allows you to run multiple versions easily.</p>
                     
-                    <h3 data-i18n="portainer_how_title">How to Use</h3>
-                    <ol class="step-list">
-                        <li data-i18n="portainer_step1">Open <b>Portainer</b> from the Application Menu (or open <code>http://localhost:9000</code>).</li>
-                        <li data-i18n="portainer_step2">On first launch, create an admin password.</li>
-                        <li data-i18n="portainer_step3">Go to <b>App Templates</b> in the sidebar.</li>
-                        <li data-i18n="portainer_step4">Select the database you need (e.g., MySQL, PostgreSQL), set a root password, and click <b>Deploy</b>.</li>
-                    </ol>
-                    <a href="https://docs.portainer.io/" target="_blank" class="docs-link" style="display: block; margin-top: 1rem;" data-i18n="official_docs">Official Docs ↗</a>
+                    <h3 data-i18n="portainer_how_title">Deploy a container</h3>
+                    <div class="step-list">
+                        <p data-i18n="portainer_step1" style="margin-bottom: 0.5rem;"></p>
+                        <img src="images/deploy-a-container-new.gif" alt="Templates Menu" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                        
+                        <p data-i18n="portainer_step2" style="margin-bottom: 0.5rem;"></p>
+                        <img src="images/docker_deploy_container_nginx.png" alt="Select Container Template" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                        
+                        <p data-i18n="portainer_step3" style="margin-bottom: 0.5rem;"></p>
+                        <img src="images/docker_deploy_container_nginx_adv_opts.png" alt="Advanced Options" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                        
+                        <p data-i18n="portainer_step4"></p>
+                    </div>
                 </div>
             </section>
         </main>

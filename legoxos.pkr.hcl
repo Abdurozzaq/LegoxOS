@@ -50,6 +50,7 @@ build {
       "mkdir -p build/rootfs/usr/share/backgrounds",
       "mkdir -p build/rootfs/usr/share/pixmaps",
       "cp assets/wallpaper.png build/rootfs/usr/share/backgrounds/legoxos-wallpaper.png",
+      "cp assets/lockscreen.jpg build/rootfs/usr/share/backgrounds/legoxos-lockscreen.jpg",
       "cp assets/logo.png build/rootfs/usr/share/pixmaps/legoxos-logo.png",
       "cp assets/legoxos-ascii.txt build/rootfs/usr/share/pixmaps/legoxos-ascii.txt",
       "mkdir -p build/rootfs/usr/share/legoxos-docs",
