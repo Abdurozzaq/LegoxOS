@@ -23,14 +23,59 @@ if [ -d /etc/calamares/branding/debian ]; then
     cp /usr/share/pixmaps/legoxos-logo.png /etc/calamares/branding/debian/icon.png || true
     cp /usr/share/pixmaps/legoxos-logo.png /usr/share/calamares/branding/debian/logo.png || true
     cp /usr/share/pixmaps/legoxos-logo.png /usr/share/calamares/branding/debian/icon.png || true
+    
+    # Buat QML Slideshow Custom untuk LegoxOS
+    echo "=> Membuat custom show.qml untuk slideshow Calamares"
+    cat << 'QML_EOF' > /etc/calamares/branding/debian/show.qml
+import QtQuick 2.5;
+import calamares.slideshow 1.0;
+
+Presentation {
+    id: presentation
+
+    Timer {
+        interval: 4000
+        running: presentation.activatedInCalamares
+        repeat: true
+        onTriggered: presentation.goToNextSlide()
+    }
+
+    Slide {
+        title: "Welcome to LegoxOS"
+        centeredText: "The Ultimate Developer Distribution"
+        Image {
+            source: "file:///usr/share/pixmaps/legoxos-logo.png"
+            anchors.centerIn: parent
+            fillMode: Image.PreserveAspectFit
+            height: 250
+        }
+    }
+    
+    Slide {
+        title: "Installing LegoxOS Workspace..."
+        Image {
+            source: "file:///usr/share/backgrounds/legoxos-wallpaper.png"
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectCrop
+        }
+    }
+}
+QML_EOF
+    # Pastikan branding.desc menunjuk ke show.qml ini
+    sed -i 's/slideshow:               "show.qml"/slideshow:               "show.qml"/g' /etc/calamares/branding/debian/branding.desc || true
 fi
 
 # Hapus shortcut bawaan "Install Debian" / Calamares murni agar live-config tidak meng-copy nya ke desktop
-rm -f /usr/share/applications/install-debian.desktop || true
-rm -f /usr/share/applications/debian-installer-launcher.desktop || true
-rm -f /usr/share/applications/calamares.desktop || true
-rm -f /etc/skel/Desktop/install-debian.desktop || true
-rm -f /root/Desktop/install-debian.desktop || true
+rm -f /usr/share/applications/*debian-installer*.desktop || true
+rm -f /usr/share/applications/*install-debian*.desktop || true
+rm -f /usr/share/applications/*calamares*.desktop || true
+rm -f /usr/share/applications/debian-calamares*.desktop || true
+rm -f /usr/share/applications/calamares-install-debian.desktop || true
+rm -f /etc/skel/Desktop/*debian*.desktop || true
+rm -f /etc/skel/Desktop/*calamares*.desktop || true
+rm -f /root/Desktop/*debian*.desktop || true
+rm -f /home/*/Desktop/*debian*.desktop || true
+rm -f /home/*/Desktop/*calamares*.desktop || true
 
 # Buat shortcut desktop untuk installer
 mkdir -p /etc/skel/Desktop

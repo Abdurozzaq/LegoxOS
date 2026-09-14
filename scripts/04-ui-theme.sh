@@ -189,4 +189,20 @@ EOF
 # Copy ke root
 cp /etc/skel/.zshrc /root/.zshrc
 
+# Buat Desktop Shortcut untuk LegoxOS Documentation (GUI Docs)
+echo "=> Membuat shortcut LegoxOS Documentation"
+mkdir -p /etc/skel/Desktop
+cat << 'EOF' > /etc/skel/Desktop/legoxos-docs.desktop
+[Desktop Entry]
+Name=Welcome to LegoxOS
+Comment=LegoxOS Documentation & Guide
+Exec=xdg-open /usr/share/legoxos-docs/index.html
+Icon=help-browser
+Terminal=false
+Type=Application
+Categories=System;Documentation;
+EOF
+chmod +x /etc/skel/Desktop/legoxos-docs.desktop
+cp /etc/skel/Desktop/legoxos-docs.desktop /usr/share/applications/legoxos-docs.desktop
+
 echo "=== [4/4] Selesai ==="

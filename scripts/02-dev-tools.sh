@@ -119,9 +119,9 @@ fi
 
 
 
-# 9. LegoxOS Database Panel (Portainer Docker GUI)
-echo "=> Mengonfigurasi LegoxOS Database Panel (Portainer)"
-cat << 'EOF' > /usr/local/bin/legoxos-db-panel
+# 9. Portainer (Docker GUI)
+echo "=> Mengonfigurasi Portainer"
+cat << 'EOF' > /usr/local/bin/portainer-launcher
 #!/bin/bash
 echo "Memeriksa Docker Daemon..."
 if ! systemctl is-active --quiet docker; then
@@ -134,18 +134,23 @@ if ! sudo docker ps | grep -q portainer; then
     echo "Membuat volume dan menjalankan container Portainer..."
     sudo docker volume create portainer_data || true
     sudo docker run -d -p 9000:9000 -p 8000:8000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+    echo "Menunggu Portainer siap..."
+    sleep 3
 fi
 
-echo "Membuka GUI LegoxOS Database Panel (Portainer)..."
-xdg-open http://localhost:9000
+echo "Membuka Portainer..."
+if ! xdg-open http://localhost:9000; then
+    echo "Gagal membuka browser via xdg-open. Mencoba membuka dengan Firefox..."
+    firefox http://localhost:9000 || chromium http://localhost:9000 || echo "Silakan buka http://localhost:9000 secara manual di browser."
+fi
 EOF
-chmod +x /usr/local/bin/legoxos-db-panel
+chmod +x /usr/local/bin/portainer-launcher
 
-cat << 'EOF' > /usr/share/applications/legoxos-db-panel.desktop
+cat << 'EOF' > /usr/share/applications/portainer.desktop
 [Desktop Entry]
-Name=LegoxOS DB Panel
-Comment=Manajer Database Multi-Versi berbasis Docker (Portainer)
-Exec=gnome-terminal -- bash -c "/usr/local/bin/legoxos-db-panel; sleep 2"
+Name=Portainer
+Comment=Docker Container Manager
+Exec=gnome-terminal -- bash -c "/usr/local/bin/portainer-launcher; echo ''; read -p 'Tekan Enter untuk menutup terminal ini...'"
 Icon=docker
 Terminal=false
 Type=Application

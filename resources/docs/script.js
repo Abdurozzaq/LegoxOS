@@ -1,0 +1,106 @@
+const translations = {
+    en: {
+        version: "Version 1.0 (Batik Edition)",
+        welcome_title: "Welcome to LegoxOS",
+        welcome_subtitle: "The ultimate, ready-to-use Linux distribution for Software Engineers.",
+        what_is_title: "What is LegoxOS?",
+        what_is_desc: "LegoxOS is a customized Linux distribution built specifically for developers. It eliminates the hassle of setting up development environments by baking all essential tools, languages, and IDEs directly into the OS. Out of the box, you get instant access to Node.js, Python, Go, PHP, Docker, and various modern GUI applications.",
+        tools_title: "Developer Tools (CLI)",
+        tools_subtitle: "Modern, fast, and pre-configured command-line tools.",
+        fnm_desc: "Handles multiple Node.js versions.",
+        pyenv_desc: "Easily switch between multiple Python versions.",
+        starship_desc: "A blazing fast prompt (Starship) and a modern replacement for ls (eza).",
+        lazydocker_desc: "A simple terminal UI for both docker and docker-compose.",
+        apps_title: "Pre-installed Apps",
+        apps_subtitle: "Ready to use graphical applications.",
+        vscode_desc: "The world's most popular code editor, pre-configured and ready to use.",
+        dbeaver_desc: "Universal database tool for developers and database administrators.",
+        postman_desc: "API development platform for building and using APIs.",
+        onlyoffice_desc: "Powerful and complete office suite fully compatible with MS Office formats.",
+        media_desc: "Discord and Telegram for communication, VLC for media playback.",
+        portainer_title: "Portainer (Database Manager)",
+        portainer_subtitle: "Manage your local databases visually through Docker.",
+        portainer_what_title: "Why Portainer?",
+        portainer_what_desc: "Instead of installing MySQL, PostgreSQL, or Redis manually on your host machine, LegoxOS uses Portainer to manage them inside Docker containers. This keeps your system clean and allows you to run multiple versions easily.",
+        portainer_how_title: "How to Use",
+        portainer_step1: "Open <b>Portainer</b> from the Application Menu (or open <code>http://localhost:9000</code>).",
+        portainer_step2: "On first launch, create an admin password.",
+        portainer_step3: "Go to <b>App Templates</b> in the sidebar.",
+        portainer_step4: "Select the database you need (e.g., MySQL, PostgreSQL), set a root password, and click <b>Deploy</b>."
+    },
+    id: {
+        version: "Versi 1.0 (Edisi Batik)",
+        welcome_title: "Selamat Datang di LegoxOS",
+        welcome_subtitle: "Distribusi Linux mutakhir yang siap pakai untuk Software Engineer.",
+        what_is_title: "Apa itu LegoxOS?",
+        what_is_desc: "LegoxOS adalah sistem operasi Linux khusus yang dibangun untuk developer. OS ini menghilangkan kerumitan mengatur environment dengan menyertakan semua tools, bahasa pemrograman, dan IDE langsung di dalamnya. Anda langsung mendapatkan akses instan ke Node.js, Python, Go, PHP, Docker, dan berbagai aplikasi GUI modern.",
+        tools_title: "Alat Developer (CLI)",
+        tools_subtitle: "Tool berbasis command-line yang modern, cepat, dan sudah dikonfigurasi.",
+        fnm_desc: "Mengatur banyak versi Node.js dengan mudah.",
+        pyenv_desc: "Beralih antar berbagai versi Python dengan praktis.",
+        starship_desc: "Prompt terminal super cepat (Starship) dan pengganti modern untuk ls (eza).",
+        lazydocker_desc: "Antarmuka terminal yang simpel untuk docker dan docker-compose.",
+        apps_title: "Aplikasi Bawaan",
+        apps_subtitle: "Aplikasi grafis (GUI) yang siap digunakan.",
+        vscode_desc: "Code editor paling populer di dunia, sudah dikonfigurasi dan siap pakai.",
+        dbeaver_desc: "Aplikasi universal untuk developer dan admin dalam mengelola database.",
+        postman_desc: "Platform pengembangan API untuk membangun dan menguji API.",
+        onlyoffice_desc: "Aplikasi perkantoran lengkap dan canggih yang kompatibel dengan format MS Office.",
+        media_desc: "Discord dan Telegram untuk komunikasi, VLC untuk memutar media.",
+        portainer_title: "Portainer (Manajer Database)",
+        portainer_subtitle: "Kelola database lokal Anda secara visual melalui Docker.",
+        portainer_what_title: "Kenapa Portainer?",
+        portainer_what_desc: "Daripada menginstal MySQL, PostgreSQL, atau Redis secara manual di komputer Anda, LegoxOS menggunakan Portainer untuk mengelolanya di dalam kontainer Docker. Ini menjaga sistem Anda tetap bersih dan memudahkan Anda menjalankan berbagai versi database.",
+        portainer_how_title: "Cara Menggunakan",
+        portainer_step1: "Buka <b>Portainer</b> dari Menu Aplikasi (atau buka <code>http://localhost:9000</code>).",
+        portainer_step2: "Saat pertama kali dibuka, buat password admin.",
+        portainer_step3: "Masuk ke menu <b>App Templates</b> di sidebar kiri.",
+        portainer_step4: "Pilih database yang Anda butuhkan (misal: MySQL, PostgreSQL), atur password root, dan klik <b>Deploy</b>."
+    }
+};
+
+let currentLang = 'en';
+
+function setLanguage(lang) {
+    currentLang = lang;
+    
+    // Update active button state
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+
+    // Translate all elements with data-i18n attribute
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+            el.innerHTML = translations[lang][key];
+        }
+    });
+}
+
+// Navigation Logic
+const navItems = document.querySelectorAll('nav li');
+const sections = document.querySelectorAll('main section');
+
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // Remove active class from all nav items
+        navItems.forEach(nav => nav.classList.remove('active'));
+        // Add active class to clicked nav item
+        item.classList.add('active');
+
+        // Hide all sections
+        sections.forEach(section => section.classList.remove('active-section'));
+        
+        // Show target section
+        const targetId = item.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('active-section');
+    });
+});
+
+// Event Listeners for Language Buttons
+document.getElementById('btn-en').addEventListener('click', () => setLanguage('en'));
+document.getElementById('btn-id').addEventListener('click', () => setLanguage('id'));
+
+// Initialize with default language
+setLanguage('en');

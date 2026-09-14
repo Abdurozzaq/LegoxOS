@@ -52,6 +52,8 @@ build {
       "cp assets/wallpaper.png build/rootfs/usr/share/backgrounds/legoxos-wallpaper.png",
       "cp assets/logo.png build/rootfs/usr/share/pixmaps/legoxos-logo.png",
       "cp assets/legoxos-ascii.txt build/rootfs/usr/share/pixmaps/legoxos-ascii.txt",
+      "mkdir -p build/rootfs/usr/share/legoxos-docs",
+      "cp -r resources/docs/* build/rootfs/usr/share/legoxos-docs/ || true",
       "",
       "echo '==> Running provisioning scripts in chroot...'",
       "chroot build/rootfs env DEBIAN_FRONTEND=noninteractive /bin/bash /tmp/packer-scripts/01-base-packages.sh",
