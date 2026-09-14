@@ -67,7 +67,7 @@ echo "=> Menginstal Starship Prompt"
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
 # 8. Aplikasi Native GUI (Baked-in ISO)
-echo "=> Menginstal Native GUI Apps (VSCode, DBeaver, Firefox, Chromium, Telegram, Discord, Postman, VLC, Spotify, OnlyOffice)"
+echo "=> Menginstal Native GUI Apps (VSCode, DBeaver, Firefox, Chromium, Telegram, Discord, Postman, VLC, OnlyOffice)"
 
 # Office Productivity (OnlyOffice)
 echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
@@ -79,11 +79,6 @@ apt-get install -y onlyoffice-desktopeditors
 # Multimedia & Codec (VLC, ffmpeg, Gstreamer)
 apt-get install -y vlc ffmpeg gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav libavcodec-extra
 
-# Spotify (Via Repositori Resmi)
-curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list
-apt-get update
-apt-get install -y spotify-client
 
 # Firefox, Chromium & Telegram
 apt-get install -y firefox-esr chromium telegram-desktop
