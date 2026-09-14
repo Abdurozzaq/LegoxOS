@@ -47,6 +47,14 @@
                     <h3 data-i18n="what_is_title">What is LegoxOS?</h3>
                     <p data-i18n="what_is_desc">LegoxOS is a customized Linux distribution built specifically for developers. It eliminates the hassle of setting up development environments by baking all essential tools, languages, and IDEs directly into the OS. Out of the box, you get instant access to Node.js, Python, Go, PHP, Docker, and various modern GUI applications.</p>
                 </div>
+                
+                <div class="card highlight-card">
+                    <h3 data-i18n="autostart_title">Disabling Autostart</h3>
+                    <p data-i18n="autostart_desc">This documentation opens automatically on startup by default. If you want to disable it, simply run this command in your terminal:</p>
+                    <div class="code-block">
+                        <code>rm ~/.config/autostart/legoxos-docs-autostart.desktop</code>
+                    </div>
+                </div>
             </section>
 
             <!-- Tools Section -->
@@ -61,6 +69,7 @@
                         <div class="code-block">
                             <code>fnm install 20<br>fnm use 20</code>
                         </div>
+                        <a href="https://github.com/Schniz/fnm" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                     <div class="card">
                         <h3>PyEnv</h3>
@@ -68,13 +77,7 @@
                         <div class="code-block">
                             <code>pyenv install 3.11.4<br>pyenv global 3.11.4</code>
                         </div>
-                    </div>
-                    <div class="card">
-                        <h3>Starship & Eza</h3>
-                        <p data-i18n="starship_desc">A blazing fast prompt (Starship) and a modern replacement for ls (eza).</p>
-                        <div class="code-block">
-                            <code>eza -la --icons</code>
-                        </div>
+                        <a href="https://github.com/pyenv/pyenv" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                     <div class="card">
                         <h3>Lazydocker</h3>
@@ -82,6 +85,23 @@
                         <div class="code-block">
                             <code>lazydocker</code>
                         </div>
+                        <a href="https://github.com/jesseduffield/lazydocker" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
+                    </div>
+                    <div class="card">
+                        <h3>Golang (GVM)</h3>
+                        <p data-i18n="golang_desc">Easily switch between multiple Go versions using GVM.</p>
+                        <div class="code-block">
+                            <code>gvm install go1.20<br>gvm use go1.20 --default</code>
+                        </div>
+                        <a href="https://github.com/moovweb/gvm" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
+                    </div>
+                    <div class="card">
+                        <h3>PHP</h3>
+                        <p data-i18n="php_desc">Switch between installed PHP versions using update-alternatives.</p>
+                        <div class="code-block">
+                            <code>sudo update-alternatives --config php</code>
+                        </div>
+                        <a href="https://www.php.net/docs.php" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                 </div>
             </section>
@@ -95,22 +115,34 @@
                     <div class="card">
                         <h3>Visual Studio Code</h3>
                         <p data-i18n="vscode_desc">The world's most popular code editor, pre-configured and ready to use.</p>
+                        <a href="https://code.visualstudio.com/docs" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                     <div class="card">
                         <h3>DBeaver CE</h3>
                         <p data-i18n="dbeaver_desc">Universal database tool for developers and database administrators.</p>
+                        <a href="https://dbeaver.com/docs/wiki/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                     <div class="card">
                         <h3>Postman</h3>
                         <p data-i18n="postman_desc">API development platform for building and using APIs.</p>
+                        <a href="https://learning.postman.com/docs/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                     <div class="card">
                         <h3>OnlyOffice</h3>
                         <p data-i18n="onlyoffice_desc">Powerful and complete office suite fully compatible with MS Office formats.</p>
+                        <a href="https://helpcenter.onlyoffice.com/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
+                    </div>
+                    <div class="card">
+                        <h3>Web Browsers</h3>
+                        <p data-i18n="browsers_desc">Modern and fast web browsers (Chromium and Firefox) for browsing and testing.</p>
+                        <a href="https://www.chromium.org/chromium-projects/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a> | 
+                        <a href="https://support.mozilla.org/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                     <div class="card">
                         <h3>Communication & Media</h3>
-                        <p data-i18n="media_desc">Discord and Telegram for communication, VLC for media playback.</p>
+                        <p data-i18n="media_desc">Discord for communication, VLC for media playback.</p>
+                        <a href="https://support.discord.com/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a> | 
+                        <a href="https://wiki.videolan.org/" target="_blank" class="docs-link" data-i18n="official_docs">Official Docs ↗</a>
                     </div>
                 </div>
             </section>
@@ -131,6 +163,7 @@
                         <li data-i18n="portainer_step3">Go to <b>App Templates</b> in the sidebar.</li>
                         <li data-i18n="portainer_step4">Select the database you need (e.g., MySQL, PostgreSQL), set a root password, and click <b>Deploy</b>.</li>
                     </ol>
+                    <a href="https://docs.portainer.io/" target="_blank" class="docs-link" style="display: block; margin-top: 1rem;" data-i18n="official_docs">Official Docs ↗</a>
                 </div>
             </section>
         </main>

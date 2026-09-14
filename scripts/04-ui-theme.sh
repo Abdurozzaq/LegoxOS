@@ -205,4 +205,8 @@ EOF
 chmod +x /etc/skel/Desktop/legoxos-docs.desktop
 cp /etc/skel/Desktop/legoxos-docs.desktop /usr/share/applications/legoxos-docs.desktop
 
+# Tambahkan ke Autostart (Berjalan otomatis saat boot pertama kali)
+mkdir -p /etc/skel/.config/autostart
+cp /etc/skel/Desktop/legoxos-docs.desktop /etc/skel/.config/autostart/legoxos-docs-autostart.desktop
+
 echo "=== [4/4] Selesai ==="
